@@ -8,7 +8,7 @@ services:
     volumes:
       - /home/ubuntu/docker/grafana-monitoring/loki:/etc/loki
     ports:
-      - "3100:3100"
+      - "127.0.0.1:3100:3100"
     restart: unless-stopped
     command: -config.file=/etc/loki/loki-config.yml
   promtail:
@@ -51,7 +51,7 @@ services:
     image: influxdb:latest
     restart: unless-stopped
     ports:
-      - 8086:8086
+      - 127.0.0.1:8086:8086
       - 8089:8089/udp
     networks:
       - grafana-monitoring
@@ -97,7 +97,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     ports:
-      - 9090:9090
+      - 127.0.0.1:9090:9090
     volumes:
       - /home/ubuntu/docker/grafana-monitoring/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:

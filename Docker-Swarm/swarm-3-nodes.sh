@@ -65,8 +65,8 @@ cp /home/$user/{$certName,$certName.pub} /home/$user/.ssh
 chmod 600 /home/$user/.ssh/$certName 
 chmod 644 /home/$user/.ssh/$certName.pub
 
-# Create SSH Config file to ignore checking (don't use in production!)
-echo "StrictHostKeyChecking no" > ~/.ssh/config
+# Create SSH Config file to auto-accept new host keys (reject changed keys)
+echo "StrictHostKeyChecking accept-new" > ~/.ssh/config
 
 #add ssh keys for all nodes
 for node in "${all[@]}"; do
@@ -81,8 +81,11 @@ scp -i /home/$user/.ssh/$certName /home/$user/$certName.pub $user@$manager1:~/.s
 # Install dependencies for each node (Docker, GlusterFS)
 for newnode in "${all[@]}"; do
   ssh $user@$newnode -i ~/.ssh/$certName sudo su <<EOF
-  iptables -F    
-  iptables -P INPUT ACCEPT  
+  # Open Docker Swarm ports (cluster management, node communication, overlay network)
+  iptables -A INPUT -p tcp --dport 2377 -j ACCEPT
+  iptables -A INPUT -p tcp --dport 7946 -j ACCEPT
+  iptables -A INPUT -p udp --dport 7946 -j ACCEPT
+  iptables -A INPUT -p udp --dport 4789 -j ACCEPT
   # Add Docker's official GPG key:
   apt-get update
   NEEDRESTART_MODE=a apt install ca-certificates curl gnupg -y
@@ -111,7 +114,7 @@ ssh -tt $user@$manager1 -i ~/.ssh/$certName sudo su <<EOF
 docker swarm init --advertise-addr $manager1 --default-addr-pool 10.20.0.0/16 --default-addr-pool-mask-length 26
 docker swarm join-token manager | sed -n 3p | grep -Po 'docker swarm join --token \\K[^\\s]*' > manager.txt
 docker swarm join-token worker | sed -n 3p | grep -Po 'docker swarm join --token \\K[^\\s]*' > worker.txt
-echo "StrictHostKeyChecking no" > ~/.ssh/config
+echo "StrictHostKeyChecking accept-new" > ~/.ssh/config
 ssh-copy-id -i /home/$user/.ssh/$certName $user@$admin
 scp -i /home/$user/.ssh/$certName /home/$user/manager.txt $user@$admin:~/manager
 scp -i /home/$user/.ssh/$certName /home/$user/worker.txt $user@$admin:~/worker
@@ -139,7 +142,8 @@ ssh -tt $user@$manager1 -i ~/.ssh/$certName sudo su <<EOF
 gluster peer probe $manager1; gluster peer probe $worker1; gluster peer probe $worker2;
 gluster volume create staging-gfs replica 3 $manager1:/gluster/volume1 $worker1:/gluster/volume1 $worker2:/gluster/volume1 force
 gluster volume start staging-gfs
-chmod 666 /var/run/docker.sock
+# Grant docker access via group membership instead of world-writable socket
+usermod -aG docker $user
 docker node update --label-add worker=true $workerHostname1
 docker node update --label-add worker=true $workerHostname2
 exit

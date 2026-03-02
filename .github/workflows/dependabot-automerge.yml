@@ -23,6 +23,18 @@ jobs:
       cancel-in-progress: true
 
     steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@dbb049abf0d677abbd7f7eee0375145b417fdd34 # v2.3.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Only auto-merge patch updates
+        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        run: |
+          echo "::error::Major version updates require manual review."
+          exit 1
+
       - name: Update branch to latest main
         env:
           GH_TOKEN: ${{ github.token }}

@@ -36,10 +36,10 @@ services:
     container_name: mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root_pass
-      MYSQL_DATABASE: guacamole_db
-      MYSQL_USER: guac_user
-      MYSQL_PASSWORD: guac_pass
+      MYSQL_ROOT_PASSWORD: ${GUAC_MYSQL_ROOT_PASSWORD:?required}
+      MYSQL_DATABASE: ${GUAC_MYSQL_DATABASE:-guacamole_db}
+      MYSQL_USER: ${GUAC_MYSQL_USER:-guac_user}
+      MYSQL_PASSWORD: ${GUAC_MYSQL_PASSWORD:?required}
     volumes:
       - ./init:/docker-entrypoint-initdb.d:z
       - ./data:/var/lib/mysql
@@ -60,10 +60,10 @@ services:
     environment:
       - GUACD_HOSTNAME=guacd
       - MYSQL_HOSTNAME=mysql
-      - MYSQL_DATABASE=guacamole_db
-      - MYSQL_USER=guac_user
-      - MYSQL_PASSWORD=guac_pass
-      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=${GUAC_MYSQL_DATABASE:-guacamole_db}
+      - MYSQL_USER=${GUAC_MYSQL_USER:-guac_user}
+      - MYSQL_PASSWORD=${GUAC_MYSQL_PASSWORD:?required}
+      - MYSQL_ROOT_PASSWORD=${GUAC_MYSQL_ROOT_PASSWORD:?required}
       - RECORDING_SEARCH_PATH=/record
       - WEBAPP_CONTEXT=ROOT # removes the need to use /guacamole in the URL
     networks:

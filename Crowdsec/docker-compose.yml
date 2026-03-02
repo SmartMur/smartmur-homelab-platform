@@ -20,7 +20,7 @@ services:
     image: docker.io/fbonalair/traefik-crowdsec-bouncer:latest
     container_name: bouncer-traefik
     environment:
-      CROWDSEC_BOUNCER_API_KEY: create_a_random_api_key
+      CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:?required}
       CROWDSEC_AGENT_HOST: crowdsec:8080
     networks:
       - proxy

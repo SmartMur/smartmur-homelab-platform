@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc486eb3f987f875e5b5f4de406 # v2.3.7
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -108,7 +108,7 @@ jobs:
   dependabot-auto-approve:
     name: Auto-approve Dependabot PRs
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]'
     steps:
       - name: Approve Dependabot PR
         run: |

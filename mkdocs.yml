@@ -5,8 +5,8 @@ repo_name: SmartMur/smartmur-homelab-platform
 
 theme:
   name: material
-  logo: assets/smartmur-logo.svg
-  favicon: assets/smartmur-logo.svg
+  logo: assets/smartmur-logo.png
+  favicon: assets/smartmur-logo.png
   palette:
     - scheme: slate
       primary: deep purple

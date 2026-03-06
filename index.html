@@ -366,17 +366,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#community-showcases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Community Showcases
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#hardware-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1864,17 +1853,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#community-showcases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Community Showcases
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#hardware-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2788,27 +2766,25 @@
 <p><a href="#one-click-deployment-scripts"><img alt="Platform" src="https://img.shields.io/badge/Platform-Proxmox%20%2B%20Docker-0ea5e9" /></a>
 <a href="#complete-service-catalog"><img alt="Services" src="https://img.shields.io/badge/Services-90%2B-22c55e" /></a>
 <a href="#security-first"><img alt="Security" src="https://img.shields.io/badge/Security-First-0284c7" /></a>
-<a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-22c55e.svg" /></a>
+<a href="https://github.com/SmartMur/smartmur-homelab-platform/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-22c55e.svg" /></a>
 <a href="https://github.com/SmartMur/homelab"><img alt="Repo" src="https://img.shields.io/badge/GitHub-SmartMur%2Fhomelab-181717?logo=github" /></a></p>
 <p>A comprehensive, security-focused collection of 90+ self-hosted services for your homelab.</p>
 <hr />
 <h2 id="quick-links">Quick Links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
 <p><strong>New to this?</strong>
-- <a href="BEGINNER-GUIDE.md">BEGINNER-GUIDE.md</a> - Complete guide from zero to hero
-- <a href="QUICK-DEPLOY.md">QUICK-DEPLOY.md</a> - Deploy entire stack in 30 minutes
+- <a href="getting-started/beginner-guide/">Beginner Guide</a> - Complete guide from zero to hero
+- <a href="getting-started/quick-deploy/">Quick Deploy</a> - Deploy entire stack in 30 minutes
 - <a href="#beginners-journey---your-first-30-days">Beginner's Journey</a> - 30-day roadmap</p>
 <p><strong>Ready to deploy?</strong>
-- <a href="PROXMOX-DEPLOYMENT.md">PROXMOX-DEPLOYMENT.md</a> - Deploy on Proxmox with exact specs
+- <a href="deployment/proxmox-deployment/">Proxmox Deployment</a> - Deploy on Proxmox with exact specs
 - <a href="#one-click-deployment-scripts">One-click scripts</a> - Automated deployment
 - <a href="#complete-service-catalog">Service Catalog</a> - Browse all 90+ services</p>
 <p><strong>Need help deciding?</strong>
-- <a href="HARDWARE-CALCULATOR.md">HARDWARE-CALCULATOR.md</a> - Calculate exact hardware needs
-- <a href="ARCHITECTURE.md">ARCHITECTURE.md</a> - Network diagrams and layouts
-- <a href="examples/">Community Examples</a> - Real homelab setups</p>
+- <a href="reference/hardware-calculator/">Hardware Calculator</a> - Calculate exact hardware needs
+- <a href="architecture/architecture/">Architecture</a> - Network diagrams and layouts</p>
 <p><strong>Security governance</strong>
-- <a href="SECURITY.md">SECURITY.md</a> - Disclosure and response policy
-- <a href="docs/SECURITY_RULEBOOK.md">docs/SECURITY_RULEBOOK.md</a> - Mandatory workflow and incident playbook
-- <code>.github/workflows/dependabot-automerge.yml</code> - Auto-approve and auto-merge Dependabot PRs</p>
+- <a href="reference/security/">Security Policy</a> - Disclosure and response policy
+- <a href="reference/security-rulebook/">Security Rulebook</a> - Mandatory workflow and incident playbook</p>
 <p align="center">
   <img src="assets/graphics/network-map.svg" alt="Homelab topology map" width="100%" />
 </p>
@@ -2824,15 +2800,7 @@ Installs: Traefik, Pi-hole, Authelia, Vaultwarden, Portainer, Watchtower</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/SmartMur/homelab/main/scripts/deploy-media.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
 </code></pre></div>
 Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent</p>
-<p>See <a href="QUICK-DEPLOY.md">QUICK-DEPLOY.md</a> for more options.</p>
-<hr />
-<h2 id="community-showcases">Community Showcases<a class="headerlink" href="#community-showcases" title="Permanent link">&para;</a></h2>
-<p>See what others have built:</p>
-<ul>
-<li><a href="examples/showcase-1-minimal.md">Minimal Setup</a> - Raspberry Pi 4, 6 services, $120</li>
-<li><a href="examples/showcase-2-media-server.md">Media Server</a> - Intel NUC, 15 services, replaces Netflix/Disney+</li>
-<li>Share yours! Open a PR</li>
-</ul>
+<p>See <a href="getting-started/quick-deploy/">Quick Deploy</a> for more options.</p>
 <hr />
 <hr />
 <h2 id="hardware-requirements">Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permanent link">&para;</a></h2>
@@ -2910,7 +2878,7 @@ Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./scripts/validate-secrets.sh
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
 </code></pre></div>
-<p>If a secret leak is detected, stop and follow <code>docs/SECURITY_RULEBOOK.md</code> before pushing anything else.</p>
+<p>If a secret leak is detected, stop and follow the <a href="reference/security-rulebook/">Security Rulebook</a> before pushing anything else.</p>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <h3 id="1-initial-setup">1. Initial Setup<a class="headerlink" href="#1-initial-setup" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Clone the repository</span>
@@ -4357,8 +4325,8 @@ Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent</p>
 </code></pre></div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="SECURITY.md">SECURITY.md</a> - Security best practices</li>
-<li><a href="docs/SECURITY_RULEBOOK.md">docs/SECURITY_RULEBOOK.md</a> - Mandatory security workflow and incident handling</li>
+<li><a href="reference/security/">Security Policy</a> - Security best practices</li>
+<li><a href="reference/security-rulebook/">Security Rulebook</a> - Mandatory security workflow and incident handling</li>
 <li>Service READMEs - Each service has detailed docs in its directory</li>
 <li>Ansible Documentation - See <code>Ansible/</code> directories</li>
 </ul>
@@ -4403,7 +4371,7 @@ Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent</p>
 1. Install pre-commit hooks: <code>pre-commit install</code>
 2. Never commit real secrets
 3. Use <code>.example</code> files for sensitive configs
-4. Review <code>docs/SECURITY_RULEBOOK.md</code> for security-sensitive changes
+4. Review the <a href="reference/security-rulebook/">Security Rulebook</a> for security-sensitive changes
 5. Test changes in a dev environment</p>
 <h2 id="important-notes">Important Notes<a class="headerlink" href="#important-notes" title="Permanent link">&para;</a></h2>
 <ol>
@@ -4420,7 +4388,7 @@ Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent</p>
 <h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Open an issue for bugs or questions</li>
-<li>Review <code>SECURITY.md</code> for security concerns</li>
+<li>Review <a href="reference/security/">Security Policy</a> for security concerns</li>
 <li>Check individual service READMEs for specific issues</li>
 </ul>
 <hr />

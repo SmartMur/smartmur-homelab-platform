@@ -709,10 +709,9 @@ You're now part of a community of thousands of people who:
 
 ## Additional Resources
 
-- [Main README](README.md) - Service catalog and quick start
-- [Security Guide](SECURITY.md) - Best practices
-- [Service-Specific Guides](.) - Detailed service READMEs
-- [Troubleshooting](README.md#troubleshooting) - Common issues
+- [Home](../index.md) - Service catalog and quick start
+- [Security Guide](../reference/security.md) - Best practices
+- [Troubleshooting](../index.md#troubleshooting) - Common issues
 
 ---
 

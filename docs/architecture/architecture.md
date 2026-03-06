@@ -343,6 +343,6 @@ For editable diagrams, see the `diagrams/` folder:
 
 ## Next Steps
 
-- See [PROXMOX-DEPLOYMENT.md](PROXMOX-DEPLOYMENT.md) for deploying on Proxmox
-- See [HARDWARE-GUIDE.md](HARDWARE-GUIDE.md) for hardware recommendations
-- See [QUICK-DEPLOY.md](QUICK-DEPLOY.md) for one-click deployment scripts
+- See [Proxmox Deployment](../deployment/proxmox-deployment.md) for deploying on Proxmox
+- See [Hardware Calculator](../reference/hardware-calculator.md) for hardware recommendations
+- See [Quick Deploy](../getting-started/quick-deploy.md) for one-click deployment scripts

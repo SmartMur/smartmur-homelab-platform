@@ -167,9 +167,9 @@ docker run authelia/authelia:latest authelia crypto hash generate argon2
 ## 📚 Next Steps
 
 1. **Read the full docs:**
-   - [README.md](README.md) - Overview
-   - [SECURITY.md](SECURITY.md) - Security practices
-   - [DEPLOYMENT.md](DEPLOYMENT.md) - Detailed deployment
+   - [Home](../index.md) - Overview
+   - [Security](../reference/security.md) - Security practices
+   - [Deployment](../deployment/deployment.md) - Detailed deployment
 
 2. **Add more services:**
    - Browse service directories

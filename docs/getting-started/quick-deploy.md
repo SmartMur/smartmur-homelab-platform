@@ -342,7 +342,7 @@ VM 2 (Media): Jellyfin, *arr stack
 VM 3 (Apps): Nextcloud, Gitea, etc.
 ```
 
-See [PROXMOX-DEPLOYMENT.md](PROXMOX-DEPLOYMENT.md)
+See [Proxmox Deployment](../deployment/proxmox-deployment.md)
 
 ---
 

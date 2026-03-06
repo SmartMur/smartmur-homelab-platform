@@ -7,7 +7,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Proxmox%20%2B%20Docker-0ea5e9)](#one-click-deployment-scripts)
 [![Services](https://img.shields.io/badge/Services-90%2B-22c55e)](#complete-service-catalog)
 [![Security](https://img.shields.io/badge/Security-First-0284c7)](#security-first)
-[![License](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-22c55e.svg)](https://github.com/SmartMur/smartmur-homelab-platform/blob/main/LICENSE)
 [![Repo](https://img.shields.io/badge/GitHub-SmartMur%2Fhomelab-181717?logo=github)](https://github.com/SmartMur/homelab)
 
 A comprehensive, security-focused collection of 90+ self-hosted services for your homelab.
@@ -17,24 +17,22 @@ A comprehensive, security-focused collection of 90+ self-hosted services for you
 ## Quick Links
 
 **New to this?**
-- [BEGINNER-GUIDE.md](BEGINNER-GUIDE.md) - Complete guide from zero to hero
-- [QUICK-DEPLOY.md](QUICK-DEPLOY.md) - Deploy entire stack in 30 minutes
+- [Beginner Guide](getting-started/beginner-guide.md) - Complete guide from zero to hero
+- [Quick Deploy](getting-started/quick-deploy.md) - Deploy entire stack in 30 minutes
 - [Beginner's Journey](#beginners-journey---your-first-30-days) - 30-day roadmap
 
 **Ready to deploy?**
-- [PROXMOX-DEPLOYMENT.md](PROXMOX-DEPLOYMENT.md) - Deploy on Proxmox with exact specs
+- [Proxmox Deployment](deployment/proxmox-deployment.md) - Deploy on Proxmox with exact specs
 - [One-click scripts](#one-click-deployment-scripts) - Automated deployment
 - [Service Catalog](#complete-service-catalog) - Browse all 90+ services
 
 **Need help deciding?**
-- [HARDWARE-CALCULATOR.md](HARDWARE-CALCULATOR.md) - Calculate exact hardware needs
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Network diagrams and layouts
-- [Community Examples](examples/) - Real homelab setups
+- [Hardware Calculator](reference/hardware-calculator.md) - Calculate exact hardware needs
+- [Architecture](architecture/architecture.md) - Network diagrams and layouts
 
 **Security governance**
-- [SECURITY.md](SECURITY.md) - Disclosure and response policy
-- [docs/SECURITY_RULEBOOK.md](docs/SECURITY_RULEBOOK.md) - Mandatory workflow and incident playbook
-- `.github/workflows/dependabot-automerge.yml` - Auto-approve and auto-merge Dependabot PRs
+- [Security Policy](reference/security.md) - Disclosure and response policy
+- [Security Rulebook](reference/security-rulebook.md) - Mandatory workflow and incident playbook
 
 <p align="center">
   <img src="assets/graphics/network-map.svg" alt="Homelab topology map" width="100%" />
@@ -58,17 +56,7 @@ curl -sSL https://raw.githubusercontent.com/SmartMur/homelab/main/scripts/deploy
 ```
 Installs: Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent
 
-See [QUICK-DEPLOY.md](QUICK-DEPLOY.md) for more options.
-
----
-
-## Community Showcases
-
-See what others have built:
-
-- [Minimal Setup](examples/showcase-1-minimal.md) - Raspberry Pi 4, 6 services, $120
-- [Media Server](examples/showcase-2-media-server.md) - Intel NUC, 15 services, replaces Netflix/Disney+
-- Share yours! Open a PR
+See [Quick Deploy](getting-started/quick-deploy.md) for more options.
 
 ---
 
@@ -130,7 +118,7 @@ This repository has been designed with security as the top priority:
 pre-commit run --all-files
 ```
 
-If a secret leak is detected, stop and follow `docs/SECURITY_RULEBOOK.md` before pushing anything else.
+If a secret leak is detected, stop and follow the [Security Rulebook](reference/security-rulebook.md) before pushing anything else.
 
 ## Quick Start
 
@@ -919,8 +907,8 @@ docker-compose up -d
 
 ## Documentation
 
-- [SECURITY.md](SECURITY.md) - Security best practices
-- [docs/SECURITY_RULEBOOK.md](docs/SECURITY_RULEBOOK.md) - Mandatory security workflow and incident handling
+- [Security Policy](reference/security.md) - Security best practices
+- [Security Rulebook](reference/security-rulebook.md) - Mandatory security workflow and incident handling
 - Service READMEs - Each service has detailed docs in its directory
 - Ansible Documentation - See `Ansible/` directories
 
@@ -981,7 +969,7 @@ Before contributing:
 1. Install pre-commit hooks: `pre-commit install`
 2. Never commit real secrets
 3. Use `.example` files for sensitive configs
-4. Review `docs/SECURITY_RULEBOOK.md` for security-sensitive changes
+4. Review the [Security Rulebook](reference/security-rulebook.md) for security-sensitive changes
 5. Test changes in a dev environment
 
 ## Important Notes
@@ -1003,7 +991,7 @@ This repository aggregates configurations for various open-source projects. Cred
 ## Support
 
 - Open an issue for bugs or questions
-- Review `SECURITY.md` for security concerns
+- Review [Security Policy](reference/security.md) for security concerns
 - Check individual service READMEs for specific issues
 
 ---

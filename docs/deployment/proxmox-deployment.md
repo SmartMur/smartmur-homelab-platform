@@ -721,12 +721,6 @@ After deployment:
 
 ---
 
-## Community Examples
+## Community
 
-See what others have deployed:
-
-- [Example 1: Minimal Setup](examples/minimal-setup.md)
-- [Example 2: Media Server](examples/media-server.md)
-- [Example 3: Full Stack](examples/full-stack.md)
-
-Share yours on r/homelab!
+Share your deployment on r/homelab!

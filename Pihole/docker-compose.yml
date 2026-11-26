@@ -39,7 +39,7 @@ services:
       proxy:
     environment:
       TZ: 'Europe/London'
-      WEBPASSWORD: 'password'
+      FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD:?Set PIHOLE_WEB_PASSWORD}
       PIHOLE_DNS_: '172.70.9.2#5053'
       DNSMASQ_LISTENING: 'all'
       VIRTUAL_HOST: pihole.smartmur.lab

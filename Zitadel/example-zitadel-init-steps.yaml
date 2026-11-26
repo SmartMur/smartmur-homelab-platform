@@ -4,4 +4,4 @@ FirstInstance:
     Human:
       # use the loginname root@zitadel.localhost
       Username: 'root'
-      Password: 'RootPassword1!'
+      # Set the initial password through ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD.

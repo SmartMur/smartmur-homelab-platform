@@ -1,5 +1,7 @@
 # Proxmox HA ARR Stack Deployment
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 Complete automation for deploying a highly available ARR stack (Sonarr, Radarr, Prowlarr, qBittorrent, etc.) on a 2-node Proxmox cluster with Pi4 as QDevice witness.
 
 ## Architecture
@@ -10,7 +12,7 @@ Complete automation for deploying a highly available ARR stack (Sonarr, Radarr, 
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  Node 1 (alpha)              Node 2 (pve)                   │
-│  192.168.100.100             192.168.100.200                │
+│  203.0.113.100             203.0.113.200                │
 │  ┌──────────────────┐        ┌──────────────────┐           │
 │  │ arr-stack-1      │        │ arr-stack-2      │           │
 │  │ Docker Compose   │        │ Docker Compose   │           │
@@ -25,7 +27,7 @@ Complete automation for deploying a highly available ARR stack (Sonarr, Radarr, 
 │                                                              │
 │  Corosync Cluster + QDevice                                 │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │ Pi4 (murzpi) - 192.168.13.83                         │  │
+│  │ Pi4 (murzpi) - 198.51.100.83                         │  │
 │  │ QDevice (qnetd) - Quorum Witness                     │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                                                              │
@@ -50,7 +52,7 @@ Complete automation for deploying a highly available ARR stack (Sonarr, Radarr, 
 Create an API token in Proxmox:
 ```bash
 # SSH to Proxmox node
-ssh root@192.168.100.100
+ssh root@203.0.113.100
 
 # Create token (replace 'terraform' with desired user)
 pveum user add terraform@pam
@@ -69,12 +71,12 @@ pveum user token add terraform@pam terraform
 # Run on one Proxmox node
 cd /path/to/Terraform
 chmod +x setup-qdevice-ha.sh
-scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
 
 # Verify
-ssh root@192.168.100.100 pvecm status
-ssh root@192.168.100.100 corosync-qdevice-net status
+ssh root@203.0.113.100 pvecm status
+ssh root@203.0.113.100 corosync-qdevice-net status
 ```
 
 See `HA-SETUP-GUIDE.md` for detailed instructions.
@@ -98,7 +100,7 @@ Key variables to set:
 
 ```hcl
 # Proxmox API
-proxmox_api_url      = "https://192.168.100.100:8006/api2/json"
+proxmox_api_url      = "https://203.0.113.100:8006/api2/json"
 proxmox_token_id     = "terraform@pam!terraform"
 proxmox_token_secret = "your-token-secret"
 
@@ -139,14 +141,14 @@ terraform plan -out=tfplan
 terraform apply tfplan
 
 # Monitor deployment
-watch -n 5 'ssh root@192.168.100.100 pvecm status'
+watch -n 5 'ssh root@203.0.113.100 pvecm status'
 ```
 
 ## Verification
 
 ### Check Cluster Status
 ```bash
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 ```
 
 Expected output:
@@ -162,39 +164,39 @@ Flags:            Quorate
 
 ### Check QDevice
 ```bash
-ssh root@192.168.100.100 corosync-qdevice-net status
+ssh root@203.0.113.100 corosync-qdevice-net status
 ```
 
 ### Check VMs
 ```bash
-ssh root@192.168.100.100 qm list
+ssh root@203.0.113.100 qm list
 ```
 
 ### Check HA Resources
 ```bash
-ssh root@192.168.100.100 ha-manager status
+ssh root@203.0.113.100 ha-manager status
 ```
 
 ### Check ARR Stack
 ```bash
-ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
+ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
 ```
 
 ## Monitoring
 
 ### Watch Cluster Events
 ```bash
-ssh root@192.168.100.100 journalctl -u corosync -f
+ssh root@203.0.113.100 journalctl -u corosync -f
 ```
 
 ### Monitor QDevice
 ```bash
-ssh root@192.168.100.100 watch -n 2 'corosync-qdevice-net status'
+ssh root@203.0.113.100 watch -n 2 'corosync-qdevice-net status'
 ```
 
 ### Check VM Logs
 ```bash
-ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml logs -f
+ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml logs -f
 ```
 
 ## Testing Failover
@@ -202,29 +204,29 @@ ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-com
 ### Test 1: Node Failure
 ```bash
 # Stop corosync on Node 1
-ssh root@192.168.100.100 systemctl stop corosync
+ssh root@203.0.113.100 systemctl stop corosync
 
 # Verify Node 2 still has quorum
-ssh root@192.168.100.200 pvecm status
+ssh root@203.0.113.200 pvecm status
 
 # Verify VMs restart on Node 2
-ssh root@192.168.100.200 qm list
+ssh root@203.0.113.200 qm list
 
 # Restart Node 1
-ssh root@192.168.100.100 systemctl start corosync
+ssh root@203.0.113.100 systemctl start corosync
 ```
 
 ### Test 2: VM Failover
 ```bash
 # Get VM ID
-VMID=$(ssh root@192.168.100.100 qm list | grep arr-stack-1 | awk '{print $1}')
+VMID=$(ssh root@203.0.113.100 qm list | grep arr-stack-1 | awk '{print $1}')
 
 # Stop VM
-ssh root@192.168.100.100 qm stop $VMID
+ssh root@203.0.113.100 qm stop $VMID
 
 # Verify it restarts on other node
 sleep 5
-ssh root@192.168.100.200 qm list | grep arr-stack-1
+ssh root@203.0.113.200 qm list | grep arr-stack-1
 ```
 
 ## Troubleshooting
@@ -232,26 +234,26 @@ ssh root@192.168.100.200 qm list | grep arr-stack-1
 ### QDevice Not Connecting
 ```bash
 # Check qnetd on Pi4
-ssh root@192.168.13.83 systemctl status corosync-qnetd
+ssh root@198.51.100.83 systemctl status corosync-qnetd
 
 # Check connectivity
-ssh root@192.168.100.100 nc -zv 192.168.13.83 5403
+ssh root@203.0.113.100 nc -zv 198.51.100.83 5403
 
 # Restart qdevice
-ssh root@192.168.100.100 systemctl restart corosync-qdevice
+ssh root@203.0.113.100 systemctl restart corosync-qdevice
 ```
 
 ### Quorum Lost
 ```bash
 # Check cluster status
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 
 # Check corosync logs
-ssh root@192.168.100.100 journalctl -u corosync -n 50
+ssh root@203.0.113.100 journalctl -u corosync -n 50
 
 # Check network connectivity
-ssh root@192.168.100.100 ping -c 3 192.168.100.200
-ssh root@192.168.100.100 ping -c 3 192.168.13.83
+ssh root@203.0.113.100 ping -c 3 203.0.113.200
+ssh root@203.0.113.100 ping -c 3 198.51.100.83
 ```
 
 ### Terraform Issues
@@ -259,17 +261,17 @@ ssh root@192.168.100.100 ping -c 3 192.168.13.83
 **Provider authentication failed:**
 ```bash
 # Verify API token
-ssh root@192.168.100.100 pveum user token list
+ssh root@203.0.113.100 pveum user token list
 
 # Test API access
 curl -k -H "Authorization: PVEAPIToken=terraform@pam!terraform=<secret>" \
-  https://192.168.100.100:8006/api2/json/version
+  https://203.0.113.100:8006/api2/json/version
 ```
 
 **Template VM not found:**
 ```bash
 # List VMs
-ssh root@192.168.100.100 qm list
+ssh root@203.0.113.100 qm list
 
 # Verify template ID matches vm_template_id in terraform.tfvars
 ```
@@ -324,18 +326,18 @@ terraform destroy
 
 ### Remove HA Configuration
 ```bash
-ssh root@192.168.100.100 ha-manager remove vm:100
-ssh root@192.168.100.100 ha-manager remove vm:101
+ssh root@203.0.113.100 ha-manager remove vm:100
+ssh root@203.0.113.100 ha-manager remove vm:101
 ```
 
 ### Remove QDevice
 ```bash
 # Edit corosync.conf on both nodes
-ssh root@192.168.100.100 nano /etc/corosync/corosync.conf
+ssh root@203.0.113.100 nano /etc/corosync/corosync.conf
 # Remove qdevice section
 
 # Reload
-ssh root@192.168.100.100 corosync-cfgtool -R
+ssh root@203.0.113.100 corosync-cfgtool -R
 ```
 
 ## Files
@@ -362,7 +364,7 @@ For issues:
 1. Check logs: `journalctl -u corosync`, `journalctl -u corosync-qdevice`
 2. Verify connectivity: `ping`, `nc`, `ssh`
 3. Review Terraform state: `terraform state show`
-4. Check Proxmox UI: https://192.168.100.100:8006
+4. Check Proxmox UI: https://203.0.113.100:8006
 
 ## License
 

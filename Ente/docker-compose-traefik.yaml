@@ -15,6 +15,10 @@ services:
     environment:
       # Pass-in the config to connect to the DB and MinIO
       ENTE_CREDENTIALS_FILE: /credentials.yaml
+      ENTE_DB_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD}
+      ENTE_S3_B2_EU_CEN_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
+      ENTE_S3_WASABI_EU_CENTRAL_2_V3_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
+      ENTE_S3_SCW_EU_FR_V3_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
      # ENTE_CLI_SECRETS_PATH: /cli-data/secret.txt
      # ENTE_CLI_CONFIG_PATH: /cli-data/
     volumes:
@@ -64,7 +68,7 @@ services:
       - 5432:5432
     environment:
       POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pgpass
+      POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD}
       POSTGRES_DB: ente_db
     # Wait for postgres to be accept connections before starting museum.
     healthcheck:
@@ -94,7 +98,7 @@ services:
       - 3201:3201 # Console
     environment:
       MINIO_ROOT_USER: test
-      MINIO_ROOT_PASSWORD: testtest
+      MINIO_ROOT_PASSWORD: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
       MINIO_SERVER_URL: https://minio.smartmur.lab
     command: server /data --address ":3200" --console-address ":3201"
     volumes:
@@ -117,6 +121,8 @@ services:
       - "traefik.http.services.minio.loadbalancer.server.port=3200"
 
   minio-provision:
+    environment:
+      MINIO_ROOT_PASSWORD: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
     image: minio/mc
     depends_on:
       - minio

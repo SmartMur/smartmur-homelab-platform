@@ -1,5 +1,7 @@
 # Proxmox 2-Node HA Setup with Pi4 QDevice
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## Overview
 This guide sets up High Availability for your 2-node Proxmox cluster using the Pi4 as a Quorum Device (QDevice). This provides:
 - **Quorum**: 3-node quorum without making Pi4 a full cluster member
@@ -8,10 +10,10 @@ This guide sets up High Availability for your 2-node Proxmox cluster using the P
 
 ## Architecture
 ```
-Proxmox Node 1 (192.168.100.100) ─┐
+Proxmox Node 1 (203.0.113.100) ─┐
                                    ├─ Corosync Cluster
-Proxmox Node 2 (192.168.100.200) ─┤
-                                   └─ QDevice: Pi4 (192.168.13.83)
+Proxmox Node 2 (203.0.113.200) ─┤
+                                   └─ QDevice: Pi4 (198.51.100.83)
 ```
 
 ## Prerequisites
@@ -32,7 +34,7 @@ Proxmox Node 2 (192.168.100.200) ─┤
 SSH into Proxmox Node 1 and run the setup script:
 
 ```bash
-ssh root@192.168.100.100
+ssh root@203.0.113.100
 
 # Download and run the setup script
 curl -O https://your-repo/setup-qdevice-ha.sh
@@ -52,7 +54,7 @@ nano /etc/corosync/corosync.conf
 qdevice {
   model: net
   net {
-    host: 192.168.13.83
+    host: 198.51.100.83
     algorithm: ffsplit
     tie_breaker: lowest
   }
@@ -69,7 +71,7 @@ corosync-qdevice-net status
 SSH into Proxmox Node 2 and repeat:
 
 ```bash
-ssh root@192.168.100.200
+ssh root@203.0.113.200
 ./setup-qdevice-ha.sh
 ```
 
@@ -116,8 +118,8 @@ Pi4 qnetd uses port 5403/TCP. Ensure it's open:
 ufw allow 5403/tcp
 
 # On Proxmox nodes (if using UFW)
-ufw allow from 192.168.100.100 to any port 5403
-ufw allow from 192.168.100.200 to any port 5403
+ufw allow from 203.0.113.100 to any port 5403
+ufw allow from 203.0.113.200 to any port 5403
 ```
 
 ## Testing Failover
@@ -167,10 +169,10 @@ tail -f /var/log/syslog | grep -i corosync
 ### QDevice Not Connecting
 ```bash
 # Check if qnetd is running on Pi4
-ssh root@192.168.13.83 systemctl status corosync-qnetd
+ssh root@198.51.100.83 systemctl status corosync-qnetd
 
 # Check connectivity
-ssh root@192.168.100.100 nc -zv 192.168.13.83 5403
+ssh root@203.0.113.100 nc -zv 198.51.100.83 5403
 
 # Restart qdevice on Proxmox node
 systemctl restart corosync-qdevice

@@ -15,6 +15,10 @@ services:
     environment:
       # Pass-in the config to connect to the DB and MinIO
       ENTE_CREDENTIALS_FILE: /credentials.yaml
+      ENTE_DB_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD}
+      ENTE_S3_B2_EU_CEN_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
+      ENTE_S3_WASABI_EU_CENTRAL_2_V3_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
+      ENTE_S3_SCW_EU_FR_V3_SECRET: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
     volumes:
       - /home/ubuntu/docker/ente/custom-logs:/var/logs
       - /home/ubuntu/docker/ente/museum.yaml:/museum.yaml:ro
@@ -37,7 +41,7 @@ services:
       - 5432:5432
     environment:
       POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pgpass
+      POSTGRES_PASSWORD: ${ENTE_DB_PASSWORD:?Set ENTE_DB_PASSWORD}
       POSTGRES_DB: ente_db
     # Wait for postgres to be accept connections before starting museum.
     healthcheck:
@@ -67,7 +71,7 @@ services:
       - 3201:3201 # Console
     environment:
       MINIO_ROOT_USER: test
-      MINIO_ROOT_PASSWORD: testtest
+      MINIO_ROOT_PASSWORD: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
     command: server /data --address ":3200" --console-address ":3201"
     volumes:
       - /home/ubuntu/docker/ente/minio-data:/data
@@ -75,6 +79,8 @@ services:
       - ente
 
   minio-provision:
+    environment:
+      MINIO_ROOT_PASSWORD: ${ENTE_MINIO_PASSWORD:?Set ENTE_MINIO_PASSWORD}
     image: minio/mc
     depends_on:
       - minio

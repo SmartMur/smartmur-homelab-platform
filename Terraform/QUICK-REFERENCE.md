@@ -1,8 +1,10 @@
 # Quick Reference: Proxmox HA ARR Stack
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## Current Setup
 - **Cluster**: Agape (2 nodes: alpha, pve)
-- **QDevice**: Pi4 (murzpi) at 192.168.13.83
+- **QDevice**: Pi4 (murzpi) at 198.51.100.83
 - **Storage**: PBS, local-lvm, unifiDrive (CIFS)
 - **Status**: Ready for HA deployment
 
@@ -10,32 +12,32 @@
 
 ### Cluster Status
 ```bash
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 ```
 
 ### QDevice Status
 ```bash
-ssh root@192.168.100.100 corosync-qdevice-net status
+ssh root@203.0.113.100 corosync-qdevice-net status
 ```
 
 ### HA Status
 ```bash
-ssh root@192.168.100.100 ha-manager status
+ssh root@203.0.113.100 ha-manager status
 ```
 
 ### List VMs
 ```bash
-ssh root@192.168.100.100 qm list
+ssh root@203.0.113.100 qm list
 ```
 
 ### VM Console
 ```bash
-ssh root@192.168.100.100 qm terminal 100
+ssh root@203.0.113.100 qm terminal 100
 ```
 
 ### Docker Compose on VM
 ```bash
-ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
+ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
 ```
 
 ## Deployment Steps
@@ -44,8 +46,8 @@ ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-com
 ```bash
 cd /Users/dre/Desktop/Smartmur/Terraform
 chmod +x setup-qdevice-ha.sh
-scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
 ```
 
 ### 2. Configure Terraform
@@ -65,33 +67,33 @@ terraform apply
 ### 4. Verify Deployment
 ```bash
 # Check cluster
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 
 # Check VMs
-ssh root@192.168.100.100 qm list
+ssh root@203.0.113.100 qm list
 
 # Check HA
-ssh root@192.168.100.100 ha-manager status
+ssh root@203.0.113.100 ha-manager status
 
 # Check ARR stack
-ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
+ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
 ```
 
 ## Monitoring
 
 ### Watch Cluster
 ```bash
-watch -n 2 'ssh root@192.168.100.100 pvecm status'
+watch -n 2 'ssh root@203.0.113.100 pvecm status'
 ```
 
 ### Watch QDevice
 ```bash
-watch -n 2 'ssh root@192.168.100.100 corosync-qdevice-net status'
+watch -n 2 'ssh root@203.0.113.100 corosync-qdevice-net status'
 ```
 
 ### Watch Logs
 ```bash
-ssh root@192.168.100.100 journalctl -u corosync -f
+ssh root@203.0.113.100 journalctl -u corosync -f
 ```
 
 ## Troubleshooting
@@ -99,38 +101,38 @@ ssh root@192.168.100.100 journalctl -u corosync -f
 ### QDevice Not Connected
 ```bash
 # Check Pi4
-ssh root@192.168.13.83 systemctl status corosync-qnetd
+ssh root@198.51.100.83 systemctl status corosync-qnetd
 
 # Check connectivity
-ssh root@192.168.100.100 nc -zv 192.168.13.83 5403
+ssh root@203.0.113.100 nc -zv 198.51.100.83 5403
 
 # Restart
-ssh root@192.168.100.100 systemctl restart corosync-qdevice
+ssh root@203.0.113.100 systemctl restart corosync-qdevice
 ```
 
 ### Quorum Lost
 ```bash
 # Check status
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 
 # Check logs
-ssh root@192.168.100.100 journalctl -u corosync -n 50
+ssh root@203.0.113.100 journalctl -u corosync -n 50
 
 # Check network
-ssh root@192.168.100.100 ping -c 3 192.168.100.200
-ssh root@192.168.100.100 ping -c 3 192.168.13.83
+ssh root@203.0.113.100 ping -c 3 203.0.113.200
+ssh root@203.0.113.100 ping -c 3 198.51.100.83
 ```
 
 ### VM Not Starting
 ```bash
 # Check HA status
-ssh root@192.168.100.100 ha-manager status
+ssh root@203.0.113.100 ha-manager status
 
 # Check VM logs
-ssh root@192.168.100.100 qm status 100
+ssh root@203.0.113.100 qm status 100
 
 # Check cloud-init
-ssh root@192.168.100.100 qm exec 100 cloud-init status
+ssh root@203.0.113.100 qm exec 100 cloud-init status
 ```
 
 ## Important Files
@@ -147,11 +149,11 @@ ssh root@192.168.100.100 qm exec 100 cloud-init status
 
 ```bash
 # Proxmox nodes
-ssh root@192.168.100.100
-ssh root@192.168.100.200
+ssh root@203.0.113.100
+ssh root@203.0.113.200
 
 # Pi4
-ssh root@192.168.13.83
+ssh root@198.51.100.83
 
 # VMs (after deployment)
 ssh root@<vm-ip>
@@ -159,8 +161,8 @@ ssh root@<vm-ip>
 
 ## Proxmox Web UI
 
-- Node 1: https://192.168.100.100:8006
-- Node 2: https://192.168.100.200:8006
+- Node 1: https://203.0.113.100:8006
+- Node 2: https://203.0.113.200:8006
 
 ## Next Steps
 

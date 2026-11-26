@@ -6,7 +6,7 @@ services:
       - WG_HOST=mydomain.com # The public hostname of your VPN server.
 
       # Optional:
-      # - PASSWORD=foobar123 # When set, requires a password when logging in to the Web UI.
+      - PASSWORD=${WG_UI_PW:?Set WG_UI_PW}
       # - WG_PORT=51820 # The public UDP port of your VPN server. WireGuard will always listen on 51820 inside the Docker container.
       # - WG_DEFAULT_ADDRESS=10.8.0.x # Clients IP address range.
       # - WG_DEFAULT_DNS=1.1.1.1 # DNS server clients will use.

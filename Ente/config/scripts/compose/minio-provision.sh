@@ -3,7 +3,9 @@
 # Script used to prepare the minio instance that runs as part of the development
 # Docker compose cluster.
 
-while ! mc config host add h0 http://minio:3200 test testtest
+: "${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}"
+
+while ! mc config host add h0 http://minio:3200 test "$MINIO_ROOT_PASSWORD"
 do
    echo "waiting for minio..."
    sleep 0.5

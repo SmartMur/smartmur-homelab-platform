@@ -1,5 +1,7 @@
 # 📋 Proxmox HA ARR Stack - Complete Setup Index
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## ✅ Status: Ready for Deployment
 
 All infrastructure is configured and verified. You can now proceed with QDevice HA setup and Terraform deployment.
@@ -12,8 +14,8 @@ All infrastructure is configured and verified. You can now proceed with QDevice 
 ```bash
 cd /Users/dre/Desktop/Smartmur/Terraform
 chmod +x setup-qdevice-ha.sh
-scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
 ```
 
 ### Step 2: Configure Terraform
@@ -87,9 +89,9 @@ terraform apply tfplan
 
 ```
 Your Proxmox Cluster (Agape)
-├── Node 1: alpha (192.168.100.100)
-├── Node 2: pve (192.168.100.200)
-└── Witness: Pi4 murzpi (192.168.13.83)
+├── Node 1: alpha (203.0.113.100)
+├── Node 2: pve (203.0.113.200)
+└── Witness: Pi4 murzpi (198.51.100.83)
 
 Deployment
 ├── VM 1: arr-stack-1 (on alpha)
@@ -211,7 +213,7 @@ Automatically used by Terraform
 
 1. **API Token**: Create in Proxmox before Terraform
    ```bash
-   ssh root@192.168.100.100
+   ssh root@203.0.113.100
    pveum user token add terraform@pam terraform
    ```
 
@@ -222,12 +224,12 @@ Automatically used by Terraform
 
 3. **Cloud-init Template**: Must exist with ID 9000
    ```bash
-   ssh root@192.168.100.100 qm list | grep 9000
+   ssh root@203.0.113.100 qm list | grep 9000
    ```
 
 4. **Shared Storage**: Must be accessible from both nodes
    ```bash
-   ssh root@192.168.100.100 pvesm status
+   ssh root@203.0.113.100 pvesm status
    ```
 
 ---
@@ -308,8 +310,8 @@ Automatically used by Terraform
 2. **Setup QDevice HA**
    ```bash
    chmod +x setup-qdevice-ha.sh
-   scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-   ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+   scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+   ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
    ```
 
 3. **Configure Terraform**
@@ -327,8 +329,8 @@ Automatically used by Terraform
 
 5. **Verify**
    ```bash
-   ssh root@192.168.100.100 qm list
-   ssh root@192.168.100.100 ha-manager status
+   ssh root@203.0.113.100 qm list
+   ssh root@203.0.113.100 ha-manager status
    ```
 
 ---

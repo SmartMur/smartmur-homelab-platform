@@ -6,14 +6,14 @@ services:
       - "zitadel"
       - "proxy"
     image: "ghcr.io/zitadel/zitadel:stable"
-    # ZITADEL_MASTERKEY: 'SAcD5TY0QPp89ip28bZPfEA5WDxqmobx' # run tr -dc A-Za-z0-9 </dev/urandom | head -c 32
-    command: 'start-from-init --config /example-zitadel-config.yaml --config /example-zitadel-secrets.yaml --steps /example-zitadel-init-steps.yaml --masterkey "SAcD5TY0QPp89ip28bZPfEA5WDxqmobx" --tlsMode external'
+    command: 'start-from-init --config /example-zitadel-config.yaml --config /example-zitadel-secrets.yaml --steps /example-zitadel-init-steps.yaml --masterkeyFromEnv --tlsMode external'
     depends_on:
       certs:
         condition: "service_completed_successfully"
     environment:
+      ZITADEL_MASTERKEY: ${ZITADEL_MASTERKEY:?Set ZITADEL_MASTERKEY}
       ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME: Admin1!@zitadel.smartmur.lab
-      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD: Password1!
+      ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD: ${ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD:?Set ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD}
     ports:
       - "8080:8080"
     volumes:

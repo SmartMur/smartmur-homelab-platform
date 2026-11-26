@@ -57,8 +57,5 @@ jobs:
             --delete-branch; then
             echo "Auto-merge enabled."
           else
-            echo "Auto-merge unavailable; merging directly."
-            gh pr merge "$PR_URL" \
-              --squash \
-              --delete-branch
+            echo "Auto-merge unavailable; leaving the PR open for review."
           fi

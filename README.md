@@ -4,6 +4,12 @@
 
 # Homelab Infrastructure Repository
 
+> Treat published template values as public. Copy the relevant `.env.example`
+> to `.env` and fill required secrets with unique values before deployment.
+> An existing database, identity provider, or backup store may require its
+> current credential until you follow that service’s rotation procedure.
+> Keep Zitadel’s existing master key when updating an existing installation.
+
 [![Platform](https://img.shields.io/badge/Platform-Proxmox%20%2B%20Docker-0ea5e9)](#one-click-deployment-scripts)
 [![Services](https://img.shields.io/badge/Services-90%2B-22c55e)](#complete-service-catalog)
 [![Security](https://img.shields.io/badge/Security-First-0284c7)](#security-first)

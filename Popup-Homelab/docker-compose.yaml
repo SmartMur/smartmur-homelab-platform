@@ -84,7 +84,7 @@ services:
     image: docker.io/fbonalair/traefik-crowdsec-bouncer:latest
     container_name: bouncer-traefik
     environment:
-      CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:-CHANGE_ME_CROWDSEC_BOUNCER_API_KEY} # generate in crowdsec container - cscli bouncer add - then add here and redeploy
+      CROWDSEC_BOUNCER_API_KEY: ${CROWDSEC_BOUNCER_API_KEY:?Set CROWDSEC_BOUNCER_API_KEY}
       CROWDSEC_AGENT_HOST: crowdsec:8080
     networks:
       - proxy # same network as traefik + crowdsec
@@ -136,7 +136,7 @@ services:
     environment:
       TZ: 'Europe/London'
       # Set a password to access the web interface. Not setting one will result in a random password being assigned
-      FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD:-CHANGE_ME_PIHOLE_WEB_PASSWORD}
+      FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD:?Set PIHOLE_WEB_PASSWORD}
       # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'3
       FTLCONF_dns_listeningMode: 'all'
       FTLCONF_dns_upstreams: '172.70.9.2#5053'
@@ -498,7 +498,7 @@ services:
       RUN_ON_STARTUP: "true" #change as you wish
       BACKUP_CRON: "0 */12 * * *" #this is twice daily, i.e., every 12 hours
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: MY_SUPER_LONG_PASSWORD
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Set RESTIC_PASSWORD}
       RESTIC_BACKUP_SOURCES: /mnt/volumes
       RESTIC_COMPRESSION: auto 
       RESTIC_BACKUP_ARGS: >-
@@ -530,7 +530,7 @@ services:
       RUN_ON_STARTUP: "true"
       PRUNE_CRON: "0 0 4 * * *"
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Set RESTIC_PASSWORD}
       TZ: Europe/London
     security_opt:
       - no-new-privileges:true
@@ -545,7 +545,7 @@ services:
       RESTIC_CHECK_ARGS: >-
         --read-data-subset=10%
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Set RESTIC_PASSWORD}
       TZ: Europe/London
     security_opt:
       - no-new-privileges:true

@@ -1,12 +1,14 @@
 # Proxmox HA ARR Stack - Deployment Checklist
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## Pre-Deployment
 
 - [x] SSH keys configured on macBook
 - [x] SSH access verified to:
-  - [x] Proxmox Node 1 (192.168.100.100)
-  - [x] Proxmox Node 2 (192.168.100.200)
-  - [x] Pi4 (192.168.13.83)
+  - [x] Proxmox Node 1 (203.0.113.100)
+  - [x] Proxmox Node 2 (203.0.113.200)
+  - [x] Pi4 (198.51.100.83)
 - [x] Cluster status verified (2 nodes, Agape cluster)
 - [x] Shared storage verified (PBS, local-lvm, unifiDrive)
 - [x] Pi4 qnetd installed and running
@@ -15,34 +17,34 @@
 
 - [ ] Run setup-qdevice-ha.sh on Node 1
   ```bash
-  scp /Users/dre/Desktop/Smartmur/Terraform/setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-  ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+  scp /Users/dre/Desktop/Smartmur/Terraform/setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+  ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
   ```
 
 - [ ] Verify QDevice on Node 1
   ```bash
-  ssh root@192.168.100.100 corosync-qdevice-net status
+  ssh root@203.0.113.100 corosync-qdevice-net status
   ```
 
 - [ ] Run setup-qdevice-ha.sh on Node 2
   ```bash
-  scp /Users/dre/Desktop/Smartmur/Terraform/setup-qdevice-ha.sh root@192.168.100.200:/tmp/
-  ssh root@192.168.100.200 /tmp/setup-qdevice-ha.sh
+  scp /Users/dre/Desktop/Smartmur/Terraform/setup-qdevice-ha.sh root@203.0.113.200:/tmp/
+  ssh root@203.0.113.200 /tmp/setup-qdevice-ha.sh
   ```
 
 - [ ] Verify QDevice on Node 2
   ```bash
-  ssh root@192.168.100.200 corosync-qdevice-net status
+  ssh root@203.0.113.200 corosync-qdevice-net status
   ```
 
 - [ ] Verify cluster quorum (should show 3 votes)
   ```bash
-  ssh root@192.168.100.100 pvecm status
+  ssh root@203.0.113.100 pvecm status
   ```
 
 - [ ] Verify HA status
   ```bash
-  ssh root@192.168.100.100 ha-manager status
+  ssh root@203.0.113.100 ha-manager status
   ```
 
 ## Phase 2: Terraform Configuration
@@ -106,14 +108,14 @@
 
 - [ ] Monitor deployment
   ```bash
-  watch -n 5 'ssh root@192.168.100.100 qm list'
+  watch -n 5 'ssh root@203.0.113.100 qm list'
   ```
 
 ## Phase 4: Post-Deployment Verification
 
 - [ ] Verify VMs created
   ```bash
-  ssh root@192.168.100.100 qm list | grep arr-stack
+  ssh root@203.0.113.100 qm list | grep arr-stack
   ```
 
 - [ ] Verify VM distribution
@@ -122,76 +124,76 @@
 
 - [ ] Verify HA resources
   ```bash
-  ssh root@192.168.100.100 ha-manager status
+  ssh root@203.0.113.100 ha-manager status
   ```
 
 - [ ] Wait for cloud-init to complete (5-10 minutes)
   ```bash
-  ssh root@192.168.100.100 qm exec 100 cloud-init status --wait
+  ssh root@203.0.113.100 qm exec 100 cloud-init status --wait
   ```
 
 - [ ] Verify Docker installed
   ```bash
-  ssh root@192.168.100.100 qm exec 100 docker --version
+  ssh root@203.0.113.100 qm exec 100 docker --version
   ```
 
 - [ ] Verify Docker Compose installed
   ```bash
-  ssh root@192.168.100.100 qm exec 100 docker compose version
+  ssh root@203.0.113.100 qm exec 100 docker compose version
   ```
 
 - [ ] Verify repository cloned
   ```bash
-  ssh root@192.168.100.100 qm exec 100 ls -la /opt/homemedia
+  ssh root@203.0.113.100 qm exec 100 ls -la /opt/homemedia
   ```
 
 - [ ] Verify ARR stack running
   ```bash
-  ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
+  ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
   ```
 
 - [ ] Verify storage paths created
   ```bash
-  ssh root@192.168.100.100 qm exec 100 ls -la /srv/
+  ssh root@203.0.113.100 qm exec 100 ls -la /srv/
   ```
 
 ## Phase 5: Failover Testing
 
 - [ ] Test 1: Stop corosync on Node 1
   ```bash
-  ssh root@192.168.100.100 systemctl stop corosync
+  ssh root@203.0.113.100 systemctl stop corosync
   ```
 
 - [ ] Verify Node 2 still has quorum
   ```bash
-  ssh root@192.168.100.200 pvecm status
+  ssh root@203.0.113.200 pvecm status
   ```
 
 - [ ] Verify VMs still accessible
   ```bash
-  ssh root@192.168.100.200 qm list | grep arr-stack
+  ssh root@203.0.113.200 qm list | grep arr-stack
   ```
 
 - [ ] Restart corosync on Node 1
   ```bash
-  ssh root@192.168.100.100 systemctl start corosync
+  ssh root@203.0.113.100 systemctl start corosync
   ```
 
 - [ ] Verify cluster reformed
   ```bash
-  ssh root@192.168.100.100 pvecm status
+  ssh root@203.0.113.100 pvecm status
   ```
 
 - [ ] Test 2: Stop VM on Node 1
   ```bash
-  VMID=$(ssh root@192.168.100.100 qm list | grep arr-stack-1 | awk '{print $1}')
-  ssh root@192.168.100.100 qm stop $VMID
+  VMID=$(ssh root@203.0.113.100 qm list | grep arr-stack-1 | awk '{print $1}')
+  ssh root@203.0.113.100 qm stop $VMID
   ```
 
 - [ ] Verify VM restarts on Node 2
   ```bash
   sleep 10
-  ssh root@192.168.100.200 qm list | grep arr-stack-1
+  ssh root@203.0.113.200 qm list | grep arr-stack-1
   ```
 
 ## Phase 6: Monitoring Setup (Optional)
@@ -247,28 +249,28 @@ If deployment fails:
 
 - [ ] Verify Proxmox API access
   ```bash
-  curl -k -H "Authorization: PVEAPIToken=..." https://192.168.100.100:8006/api2/json/version
+  curl -k -H "Authorization: PVEAPIToken=..." https://203.0.113.100:8006/api2/json/version
   ```
 
 - [ ] Check cloud-init logs on VM
   ```bash
-  ssh root@192.168.100.100 qm exec 100 cat /var/log/cloud-init-output.log
+  ssh root@203.0.113.100 qm exec 100 cat /var/log/cloud-init-output.log
   ```
 
 - [ ] Check corosync logs
   ```bash
-  ssh root@192.168.100.100 journalctl -u corosync -n 50
+  ssh root@203.0.113.100 journalctl -u corosync -n 50
   ```
 
 - [ ] Check QDevice logs
   ```bash
-  ssh root@192.168.100.100 journalctl -u corosync-qdevice -n 50
+  ssh root@203.0.113.100 journalctl -u corosync-qdevice -n 50
   ```
 
 - [ ] Verify network connectivity
   ```bash
-  ssh root@192.168.100.100 ping -c 3 192.168.100.200
-  ssh root@192.168.100.100 ping -c 3 192.168.13.83
+  ssh root@203.0.113.100 ping -c 3 203.0.113.200
+  ssh root@203.0.113.100 ping -c 3 198.51.100.83
   ```
 
 ## Completion

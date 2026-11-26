@@ -1,14 +1,16 @@
 # ✅ Proxmox HA ARR Stack - Setup Complete
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## Connectivity Status
 
 All hosts are reachable and accessible from your macBook:
 
 | Host | IP | Status | Latency | Kernel |
 |------|----|---------|---------|----|
-| Proxmox Node 1 (alpha) | 192.168.100.100 | ✅ OK | 4.2ms | 6.17.4-2-pve |
-| Proxmox Node 2 (pve) | 192.168.100.200 | ✅ OK | 4.3ms | 6.17.9-1-pve |
-| Pi4 (murzpi) | 192.168.13.83 | ✅ OK | 1.1ms | 6.12.62+rpt-rpi-v8 |
+| Proxmox Node 1 (alpha) | 203.0.113.100 | ✅ OK | 4.2ms | 6.17.4-2-pve |
+| Proxmox Node 2 (pve) | 203.0.113.200 | ✅ OK | 4.3ms | 6.17.9-1-pve |
+| Pi4 (murzpi) | 198.51.100.83 | ✅ OK | 1.1ms | 6.12.62+rpt-rpi-v8 |
 
 ## Infrastructure Ready
 
@@ -50,16 +52,16 @@ cd /Users/dre/Desktop/Smartmur/Terraform
 chmod +x setup-qdevice-ha.sh
 
 # Run on Node 1
-scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
 
 # Run on Node 2
-scp setup-qdevice-ha.sh root@192.168.100.200:/tmp/
-ssh root@192.168.100.200 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.200:/tmp/
+ssh root@203.0.113.200 /tmp/setup-qdevice-ha.sh
 
 # Verify
-ssh root@192.168.100.100 pvecm status
-ssh root@192.168.100.100 corosync-qdevice-net status
+ssh root@203.0.113.100 pvecm status
+ssh root@203.0.113.100 corosync-qdevice-net status
 ```
 
 ### 2. Configure Terraform
@@ -85,9 +87,9 @@ terraform apply tfplan
 
 ### 4. Verify Deployment
 ```bash
-ssh root@192.168.100.100 qm list
-ssh root@192.168.100.100 ha-manager status
-ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
+ssh root@203.0.113.100 qm list
+ssh root@203.0.113.100 ha-manager status
+ssh root@203.0.113.100 qm exec 100 docker compose -f /opt/homemedia/docker-compose.yml ps
 ```
 
 ## What Gets Deployed
@@ -118,7 +120,7 @@ ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-com
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  Node 1 (alpha)              Node 2 (pve)                   │
-│  192.168.100.100             192.168.100.200                │
+│  203.0.113.100             203.0.113.200                │
 │  ┌──────────────────┐        ┌──────────────────┐           │
 │  │ arr-stack-1      │        │ arr-stack-2      │           │
 │  │ Docker Compose   │        │ Docker Compose   │           │
@@ -132,7 +134,7 @@ ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-com
 │                                                              │
 │  Corosync Cluster + QDevice                                 │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │ Pi4 (murzpi) - 192.168.13.83                         │  │
+│  │ Pi4 (murzpi) - 198.51.100.83                         │  │
 │  │ QDevice (qnetd) - Quorum Witness                     │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                                                              │
@@ -147,7 +149,7 @@ ssh root@192.168.100.100 qm exec 100 docker compose -f /opt/homemedia/docker-com
 
 2. **Create Proxmox API Token**
    ```bash
-   ssh root@192.168.100.100
+   ssh root@203.0.113.100
    pveum user token add terraform@pam terraform
    # Save the token secret
    ```

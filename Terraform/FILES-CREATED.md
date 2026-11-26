@@ -1,5 +1,7 @@
 # Files Created for Proxmox HA ARR Stack Deployment
 
+The IP addresses below are documentation examples. Substitute your deployment's addresses before using these commands.
+
 ## Directory Structure
 ```
 /Users/dre/Desktop/Smartmur/Terraform/
@@ -204,8 +206,8 @@ chmod +x verify-connectivity.sh
 
 # Setup QDevice HA
 chmod +x setup-qdevice-ha.sh
-scp setup-qdevice-ha.sh root@192.168.100.100:/tmp/
-ssh root@192.168.100.100 /tmp/setup-qdevice-ha.sh
+scp setup-qdevice-ha.sh root@203.0.113.100:/tmp/
+ssh root@203.0.113.100 /tmp/setup-qdevice-ha.sh
 ```
 
 ### 2. Terraform Deployment
@@ -223,13 +225,13 @@ terraform apply tfplan
 ### 3. Verification
 ```bash
 # Check cluster
-ssh root@192.168.100.100 pvecm status
+ssh root@203.0.113.100 pvecm status
 
 # Check HA
-ssh root@192.168.100.100 ha-manager status
+ssh root@203.0.113.100 ha-manager status
 
 # Check VMs
-ssh root@192.168.100.100 qm list
+ssh root@203.0.113.100 qm list
 ```
 
 ## Important Notes
